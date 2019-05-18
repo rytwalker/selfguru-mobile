@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import { DatePickerIOS, StyleSheet, Text, View } from 'react-native';
-import {
-  Form,
-  Item,
-  Input,
-  Label,
-  DatePicker,
-  Button,
-  Picker
-} from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
+import { Form, Item, Input, Label, Button, Picker } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { labelColors } from './MessageLabels';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -32,9 +24,18 @@ class MessageForm extends Component {
   };
 
   handleDatePicked = date => {
-    console.log('A date has been picked: ', date);
     this.setDate(date);
     this.hideDateTimePicker();
+  };
+
+  submitForm = () => {
+    const { message, label, sendDate } = this.state;
+    const { handleSubmit } = this.props;
+    handleSubmit({
+      content: message,
+      label: label,
+      sendtime: sendDate
+    });
   };
 
   render() {
@@ -103,7 +104,7 @@ class MessageForm extends Component {
             <Picker.Item label="Study" value="school" />
           </Picker>
         </Item>
-        <Button block style={styles.addButton}>
+        <Button block style={styles.addButton} onPress={this.submitForm}>
           <Text style={styles.addButtonText}>Add</Text>
         </Button>
       </Form>

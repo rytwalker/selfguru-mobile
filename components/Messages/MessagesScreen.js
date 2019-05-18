@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import Messages from './Messages';
-import MessageForm from './MessageForm';
+import MessageNew from './MessageNew';
 import navStyles from '../../styles/navStyles';
 
 class MessagesScreen extends Component {
@@ -10,6 +10,8 @@ class MessagesScreen extends Component {
     title: 'selfguru',
     ...navStyles
   };
+  toggleNewMessage = () =>
+    this.setState({ newMessage: !this.state.newMessage });
   render() {
     const { newMessage } = this.state;
     return (
@@ -20,7 +22,7 @@ class MessagesScreen extends Component {
         >
           <Text style={styles.addButtonText}>+ Add New Message</Text>
         </TouchableHighlight>
-        {newMessage && <MessageForm />}
+        {newMessage && <MessageNew toggleNewMessage={this.toggleNewMessage} />}
         <Messages />
       </View>
     );
