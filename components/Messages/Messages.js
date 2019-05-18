@@ -19,12 +19,12 @@ class Messages extends Component {
               let formattedTime = formatDateTime(item.sendtime);
               return (
                 <ListItem style={styles.listItem}>
-                  <Ionicons name={'ios-mail'} size={30} />
+                  <Ionicons name={'ios-mail'} size={30} color="#46494C" />
                   <View style={styles.itemText}>
                     <Text style={styles.messageText}>{item.content}</Text>
                     <Text style={styles.messageDate}>{formattedTime}</Text>
                   </View>
-                  <Ionicons name={'ios-heart'} size={30} />
+                  <Ionicons name={'ios-heart'} size={30} color="#D33F49" />
                 </ListItem>
               );
             }}
@@ -53,10 +53,13 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#46494C',
+    fontStyle: 'italic'
   },
   messageDate: {
-    fontSize: 12
+    fontSize: 12,
+    color: '#46494C'
   }
 });
 

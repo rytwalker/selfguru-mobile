@@ -5,7 +5,7 @@ import MessageForm from './MessageForm';
 import navStyles from '../../styles/navStyles';
 
 class MessagesScreen extends Component {
-  state = { newMessage: false };
+  state = { newMessage: true };
   static navigationOptions = {
     title: 'selfguru',
     ...navStyles
