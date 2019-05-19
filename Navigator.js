@@ -5,9 +5,10 @@ import {
   createBottomTabNavigator,
   createAppContainer
 } from 'react-navigation';
-import ProfileScreen from './components/Profile/ProfileScreen';
+import AuthScreen from './components/Auth/AuthScreen';
 import MessagesScreen from './components/Messages/MessagesScreen';
 import Message from './components/Messages/Message';
+import ProfileScreen from './components/Profile/ProfileScreen';
 
 const MessageStack = createStackNavigator({
   Messages: { screen: MessagesScreen },
@@ -21,7 +22,8 @@ const ProfileStack = createStackNavigator({
 const TabNavigator = createBottomTabNavigator(
   {
     Messages: { screen: MessageStack },
-    Profile: { screen: ProfileStack }
+    Profile: { screen: ProfileStack },
+    Login: { screen: AuthScreen }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -33,7 +35,9 @@ const TabNavigator = createBottomTabNavigator(
           iconName = `ios-mail${focused ? '-open' : ''}`;
           // IconComponent = HomeIconWithBadge;
         } else if (routeName === 'Profile') {
-          iconName = `ios-options`;
+          iconName = `ios-contact`;
+        } else if (routeName === 'Login') {
+          iconName = `ios-log-in`;
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       }
