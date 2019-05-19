@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "apollo-boost": "^0.3.1",
+    "apollo-link-context": "^1.0.17",
     "expo": "^32.0.0",
     "graphql": "^14.3.0",
     "native-base": "^2.12.1",

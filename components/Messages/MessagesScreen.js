@@ -22,7 +22,12 @@ class MessagesScreen extends Component {
         >
           <Text style={styles.addButtonText}>+ Add New Message</Text>
         </TouchableHighlight>
-        {newMessage && <MessageNew toggleNewMessage={this.toggleNewMessage} />}
+        {newMessage && (
+          <MessageNew
+            toggleNewMessage={this.toggleNewMessage}
+            {...this.props}
+          />
+        )}
         <Messages {...this.props} />
       </View>
     );

@@ -6,14 +6,15 @@ import { gql } from 'apollo-boost';
 
 class MessageNew extends Component {
   handleSubmit = async ({ content, label, sendtime }) => {
-    const { newMessage, toggleNewMessage } = this.props;
+    const { newMessage, toggleNewMessage, screenProps } = this.props;
     try {
       toggleNewMessage();
       await newMessage({
         variables: {
           content,
           label,
-          sendtime
+          sendtime,
+          userId: screenProps.user.id
         }
       });
     } catch (error) {
@@ -30,8 +31,18 @@ class MessageNew extends Component {
 }
 
 const newMessage = gql`
-  mutation newMessage($content: String!, $label: String, $sendtime: DateTime!) {
-    createMessage(content: $content, label: $label, sendtime: $sendtime) {
+  mutation newMessage(
+    $content: String!
+    $label: String
+    $sendtime: DateTime!
+    $userId: ID!
+  ) {
+    createMessage(
+      content: $content
+      label: $label
+      sendtime: $sendtime
+      userId: $userId
+    ) {
       id
     }
   }
@@ -40,6 +51,6 @@ const newMessage = gql`
 export default graphql(newMessage, {
   name: 'newMessage',
   options: {
-    refetchQueries: ['messagesQuery']
+    refetchQueries: ['userQuery']
   }
 })(MessageNew);

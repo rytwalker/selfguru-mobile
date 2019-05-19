@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
 import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import navStyles from '../../styles/navStyles';
 import MessageForm from './MessageForm';
 
 class Message extends Component {
-  static navigationOptions = {
-    title: 'selfguru',
-    ...navStyles
-  };
   render() {
-    const { loading, Message } = this.props;
+    const { handleSubmit, loading, Message } = this.props;
     if (loading) return null;
-    return (
-      <View>
-        <MessageForm Message={Message} />
-      </View>
-    );
+    return <MessageForm Message={Message} handleSubmit={handleSubmit} />;
   }
 }
 

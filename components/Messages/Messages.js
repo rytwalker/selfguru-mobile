@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
 import { ListItem } from 'native-base';
-import { graphql } from 'react-apollo';
-import { gql } from 'apollo-boost';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import formatDateTime from '../../utils/formatDateTime';
 import { labelColors } from './MessageLabels';
 
 class Messages extends Component {
   render() {
-    const { loading, allMessages, navigation } = this.props;
-    if (loading) return null;
+    const { navigation, screenProps } = this.props;
+
     return (
       <View>
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={allMessages}
+          data={screenProps.user.messages}
           renderItem={({ item }) => {
             let formattedTime = formatDateTime(item.sendtime);
             return (
@@ -75,17 +73,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const messagesQuery = gql`
-  query messagesQuery {
-    allMessages(orderBy: sendtime_ASC) {
-      id
-      content
-      sendtime
-      label
-    }
-  }
-`;
-
-export default graphql(messagesQuery, {
-  props: ({ data }) => ({ ...data })
-})(Messages);
+export default Messages;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
+import { withApollo } from 'react-apollo';
 import Login from './Login';
 import Register from './Register';
 
@@ -12,7 +13,7 @@ class AuthScreen extends Component {
     const { register } = this.state;
     return (
       <View style={styles.container}>
-        {register ? <Register /> : <Login />}
+        {register ? <Register {...this.props} /> : <Login {...this.props} />}
         <Button onPress={this.toggleRegister} title="Toggle" />
       </View>
     );
@@ -26,4 +27,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AuthScreen;
+export default withApollo(AuthScreen);

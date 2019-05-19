@@ -1,18 +1,21 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer
 } from 'react-navigation';
+import { graphql } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import AuthScreen from './components/Auth/AuthScreen';
 import MessagesScreen from './components/Messages/MessagesScreen';
-import Message from './components/Messages/Message';
+import MessageUpdate from './components/Messages/MessageUpdate';
 import ProfileScreen from './components/Profile/ProfileScreen';
 
 const MessageStack = createStackNavigator({
   Messages: { screen: MessagesScreen },
-  Message: { screen: Message }
+  Message: { screen: MessageUpdate }
 });
 
 const ProfileStack = createStackNavigator({
@@ -49,4 +52,29 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+const Navigator = createAppContainer(TabNavigator);
+
+const NavWrapper = ({ loading, user }) => {
+  if (loading) return <ActivityIndicator size="large" />;
+  if (!user) return <AuthScreen />;
+  return <Navigator screenProps={{ user }} />;
+};
+
+const userQuery = gql`
+  query userQuery {
+    user {
+      id
+      email
+      messages(orderBy: sendtime_ASC) {
+        id
+        content
+        label
+        sendtime
+      }
+    }
+  }
+`;
+
+export default graphql(userQuery, { props: ({ data }) => ({ ...data }) })(
+  NavWrapper
+);
