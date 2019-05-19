@@ -7,9 +7,11 @@ import {
 } from 'react-navigation';
 import ProfileScreen from './components/Profile/ProfileScreen';
 import MessagesScreen from './components/Messages/MessagesScreen';
+import Message from './components/Messages/Message';
 
 const MessageStack = createStackNavigator({
-  Messages: { screen: MessagesScreen }
+  Messages: { screen: MessagesScreen },
+  Message: { screen: Message }
 });
 
 const ProfileStack = createStackNavigator({

@@ -5,7 +5,7 @@ import MessageNew from './MessageNew';
 import navStyles from '../../styles/navStyles';
 
 class MessagesScreen extends Component {
-  state = { newMessage: true };
+  state = { newMessage: false };
   static navigationOptions = {
     title: 'selfguru',
     ...navStyles
@@ -23,7 +23,7 @@ class MessagesScreen extends Component {
           <Text style={styles.addButtonText}>+ Add New Message</Text>
         </TouchableHighlight>
         {newMessage && <MessageNew toggleNewMessage={this.toggleNewMessage} />}
-        <Messages />
+        <Messages {...this.props} />
       </View>
     );
   }

@@ -11,8 +11,20 @@ class MessageForm extends Component {
     message: '',
     label: 'heart',
     sendDate: new Date(),
-    isDateTimePickerVisible: false
+    isDateTimePickerVisible: false,
+    isUpate: false
   };
+  componentDidMount() {
+    const { Message } = this.props;
+    if (Message) {
+      this.setState({
+        message: Message.content,
+        label: Message.label,
+        sendDate: Message.sendtime,
+        isUpdate: true
+      });
+    }
+  }
   handleLableChange = value => this.setState({ label: value });
   setDate = newDate => this.setState({ sendDate: newDate });
   showDateTimePicker = () => {
@@ -39,7 +51,7 @@ class MessageForm extends Component {
   };
 
   render() {
-    const { label, message, sendDate } = this.state;
+    const { isUpdate, label, message, sendDate } = this.state;
     let formattedDate = formatDateTime(sendDate);
     return (
       <Form style={styles.form}>
@@ -105,7 +117,9 @@ class MessageForm extends Component {
           </Picker>
         </Item>
         <Button block style={styles.addButton} onPress={this.submitForm}>
-          <Text style={styles.addButtonText}>Add</Text>
+          <Text style={styles.addButtonText}>
+            {isUpdate ? 'Update' : 'Add'}
+          </Text>
         </Button>
       </Form>
     );
