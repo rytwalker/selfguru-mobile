@@ -17,13 +17,13 @@ class Register extends Component {
       signIn(signin.data.signinUser.token);
       this.props.client.resetStore();
     } catch (error) {
-      console.dir(error);
+      console.log(error);
     }
   };
   render() {
     return (
       <View>
-        <AuthForm onSubmit={this.registerUser} type="Register" />
+        <AuthForm onSubmit={this.registerUser} type="Sign Up" />
       </View>
     );
   }
