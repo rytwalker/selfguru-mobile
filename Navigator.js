@@ -25,8 +25,7 @@ const ProfileStack = createStackNavigator({
 const TabNavigator = createBottomTabNavigator(
   {
     Messages: { screen: MessageStack },
-    Profile: { screen: ProfileStack },
-    Login: { screen: AuthScreen }
+    Profile: { screen: ProfileStack }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -65,6 +64,9 @@ const userQuery = gql`
     user {
       id
       email
+      firstName
+      lastName
+      profileImg
       messages(orderBy: sendtime_ASC) {
         id
         content
