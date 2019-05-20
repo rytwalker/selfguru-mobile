@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from 'apollo-link-context';
+import { Font } from 'expo';
 import Navigator from './Navigator';
 import { getToken } from './utils/loginUtils';
 
@@ -27,10 +28,18 @@ const client = new ApolloClient({
 });
 
 export default class App extends Component {
+  state = { fontLoaded: false };
+  async componentDidMount() {
+    await Font.loadAsync({
+      'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf')
+    });
+    this.setState({ fontLoaded: true });
+  }
   render() {
+    const { fontLoaded } = this.state;
     return (
       <ApolloProvider client={client}>
-        <Navigator />
+        {fontLoaded && <Navigator />}
       </ApolloProvider>
     );
   }

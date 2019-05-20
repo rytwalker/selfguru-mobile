@@ -16,7 +16,7 @@ class AuthScreen extends Component {
       <View style={styles.container}>
         {register ? <Register {...this.props} /> : <Login {...this.props} />}
         <View style={styles.authToggle}>
-          <Text>{register ? 'Already Signed up?' : 'Not signed up?'}</Text>
+          <Text>{register ? 'Already signed up?' : 'Not signed up?'}</Text>
           <Button
             style={styles.toggleBtn}
             transparent
