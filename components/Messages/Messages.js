@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
-import { ListItem } from 'native-base';
+import { Text, View, ListView, StyleSheet } from 'react-native';
+import { Button, List, ListItem } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import formatDateTime from '../../utils/formatDateTime';
 import { labelColors } from './MessageLabels';
@@ -8,14 +8,18 @@ import { labelColors } from './MessageLabels';
 class Messages extends Component {
   render() {
     const { navigation, screenProps } = this.props;
-
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
     return (
       <View>
-        <FlatList
+        <List
+          contentContainerStyle={styles.list}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={screenProps.user.messages}
-          renderItem={({ item }) => {
+          rightOpenValue={-75}
+          dataSource={ds.cloneWithRows(screenProps.user.messages)}
+          renderRow={item => {
             let formattedTime = formatDateTime(item.sendtime);
             return (
               <ListItem
@@ -39,6 +43,11 @@ class Messages extends Component {
               </ListItem>
             );
           }}
+          renderRightHiddenRow={() => (
+            <Button full style={{ backgroundColor: '#D33F49' }}>
+              <Ionicons name="ios-trash" size={30} color="#fff" />
+            </Button>
+          )}
           keyExtractor={item => item.id}
         />
       </View>
@@ -48,14 +57,12 @@ class Messages extends Component {
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1
+    justifyContent: 'space-between'
   },
   listItem: {
     backgroundColor: '#fff',
     padding: 20,
-    marginBottom: 10,
-    marginLeft: 0,
-    borderRadius: 5
+    marginLeft: 0
   },
   itemText: {
     marginRight: 'auto',
