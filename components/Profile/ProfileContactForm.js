@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Form, Item, Input, Label, Button } from 'native-base';
+import { Form, Item, Input, Label, Button, Toast } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
@@ -13,7 +13,7 @@ class ProfileContactForm extends Component {
 
   submitForm = async () => {
     const { firstName, lastName } = this.state;
-    const { updateUser, user } = this.props;
+    const { handleAlert, updateUser, user } = this.props;
     try {
       await updateUser({
         variables: {
@@ -22,6 +22,13 @@ class ProfileContactForm extends Component {
           lastName
         }
       });
+      // Toast.show({
+      //   text: 'Profile updated!',
+      //   buttonText: '',
+      //   duration: 3000,
+      //   position: 'top'
+      // });
+      handleAlert('Profile updated!');
     } catch (error) {
       console.log(error);
     }

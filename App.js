@@ -3,8 +3,10 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from 'apollo-link-context';
 import { Font } from 'expo';
+import { Root } from 'native-base';
 import Navigator from './Navigator';
 import { getToken } from './utils/loginUtils';
+// import Alert from '../../utils/Alert';
 
 const authLink = setContext(async (req, { headers }) => {
   const token = await getToken();
@@ -39,7 +41,7 @@ export default class App extends Component {
     const { fontLoaded } = this.state;
     return (
       <ApolloProvider client={client}>
-        {fontLoaded && <Navigator />}
+        <Root>{fontLoaded && <Navigator />}</Root>
       </ApolloProvider>
     );
   }
