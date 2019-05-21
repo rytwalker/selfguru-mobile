@@ -18,10 +18,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
-    },
-    "infoPlist": {
-      "NSFaceIDUsageDescription": "This app uses the FaceID and TouchID to login."
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses the FaceID and TouchID to login."
+      }
     }
   }
 }
