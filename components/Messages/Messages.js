@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import formatDateTime from '../../utils/formatDateTime';
 import { labelColors } from './MessageLabels';
+import Message from './Message';
 
 class Messages extends Component {
   state = { dataSource: null };
@@ -18,7 +19,6 @@ class Messages extends Component {
   componentDidUpdate(prevProps) {
     const { messages } = this.props.screenProps.user;
     if (prevProps.screenProps.user.messages !== messages) {
-      console.log('hello');
       this.setState({ dataSource: messages });
     }
   }
@@ -44,12 +44,11 @@ class Messages extends Component {
     }
   };
 
-  hanldeMessageNavigate = id =>
+  handleMessageNavigate = id =>
     this.props.navigation.navigate('Message', { id });
 
   render() {
     const { dataSource } = this.state;
-    const { screenProps } = this.props;
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
@@ -65,21 +64,26 @@ class Messages extends Component {
             renderRow={item => {
               let formattedTime = formatDateTime(item.sendtime);
               return (
-                <ListItem
-                  style={styles.listItem}
-                  onPress={() => this.hanldeMessageNavigate(item.id)}
-                >
-                  <Ionicons name={'ios-mail'} size={30} color="#46494C" />
-                  <View style={styles.itemText}>
-                    <Text style={styles.messageText}>{item.content}</Text>
-                    <Text style={styles.messageDate}>{formattedTime}</Text>
-                  </View>
-                  <Ionicons
-                    name={`ios-${item.label}`}
-                    size={30}
-                    color={labelColors[item.label]}
-                  />
-                </ListItem>
+                <Message
+                  formattedTime={formattedTime}
+                  handleMessageNavigate={this.handleMessageNavigate}
+                  item={item}
+                />
+                // <ListItem
+                //   style={styles.listItem}
+                //   onPress={() => this.handleMessageNavigate(item.id)}
+                // >
+                //   <Ionicons name={'ios-mail'} size={30} color="#46494C" />
+                //   <View style={styles.listItemText}>
+                //     <Text style={styles.messageText}>{item.content}</Text>
+                //     <Text style={styles.messageDate}>{formattedTime}</Text>
+                //   </View>
+                //   <Ionicons
+                //     name={`ios-${item.label}`}
+                //     size={30}
+                //     color={labelColors[item.label]}
+                //   />
+                // </ListItem>
               );
             }}
             renderRightHiddenRow={(item, secId, rowId, rowMap) => (
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginLeft: 0
   },
-  itemText: {
+  listItemText: {
     marginRight: 'auto',
     marginLeft: 10
   },

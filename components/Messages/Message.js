@@ -1,32 +1,29 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import { gql } from 'apollo-boost';
-import MessageForm from './MessageForm';
+import { Text, View } from 'react-native';
+import { ListItem } from 'native-base';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { styles } from '../../styles/messageStyles';
+import { labelColors } from './MessageLabels';
 
 class Message extends Component {
+  handlePress = () => {
+    const { item, handleMessageNavigate } = this.props;
+    handleMessageNavigate(item.id);
+  };
   render() {
-    const { handleSubmit, loading, Message } = this.props;
-    if (loading) return null;
-    return <MessageForm Message={Message} handleSubmit={handleSubmit} />;
+    const { content, label } = this.props.item;
+    const { listItem, listItemText, messageText, messageDate } = styles;
+    return (
+      <ListItem style={listItem} onPress={this.handlePress}>
+        <Ionicons name={'ios-mail'} size={30} color="#46494C" />
+        <View style={listItemText}>
+          <Text style={messageText}>{content}</Text>
+          <Text style={messageDate}>{this.props.formattedTime}</Text>
+        </View>
+        <Ionicons name={`ios-${label}`} size={30} color={labelColors[label]} />
+      </ListItem>
+    );
   }
 }
 
-const messageQuery = gql`
-  query Message($id: ID!) {
-    Message(id: $id) {
-      id
-      content
-      sendtime
-      label
-    }
-  }
-`;
-
-export default graphql(messageQuery, {
-  props: ({ data }) => ({ ...data }),
-  options: ({ navigation }) => ({
-    variables: {
-      id: navigation.state.params.id
-    }
-  })
-})(Message);
+export default Message;
