@@ -2,10 +2,25 @@ import React, { Component } from 'react';
 import { Text, View, ListView, StyleSheet } from 'react-native';
 import { Button, List, ListItem } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { graphql } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import formatDateTime from '../../utils/formatDateTime';
 import { labelColors } from './MessageLabels';
 
 class Messages extends Component {
+  handleMessageDelete = async id => {
+    const { deleteMessage } = this.props;
+
+    try {
+      await deleteMessage({
+        variables: {
+          id: id
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
     const { navigation, screenProps } = this.props;
     const ds = new ListView.DataSource({
@@ -43,8 +58,12 @@ class Messages extends Component {
               </ListItem>
             );
           }}
-          renderRightHiddenRow={() => (
-            <Button full style={{ backgroundColor: '#D33F49' }}>
+          renderRightHiddenRow={item => (
+            <Button
+              full
+              onPress={() => this.handleMessageDelete(item.id)}
+              style={{ backgroundColor: '#D33F49' }}
+            >
               <Ionicons name="ios-trash" size={30} color="#fff" />
             </Button>
           )}
@@ -80,4 +99,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Messages;
+const deleteMessage = gql`
+  mutation deleteMessage($id: ID!) {
+    deleteMessage(id: $id) {
+      id
+    }
+  }
+`;
+
+export default graphql(deleteMessage, {
+  name: 'deleteMessage',
+  options: {
+    refetchQueries: ['Message']
+  }
+})(Messages);
