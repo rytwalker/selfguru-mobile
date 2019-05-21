@@ -16,7 +16,6 @@ class MessagesScreen extends Component {
   render() {
     const { newMessage } = this.state;
     const { user } = this.props.screenProps;
-    console.log(this.props.screenProps);
     return (
       <View style={styles.container}>
         <View style={styles.welcomeSection}>
