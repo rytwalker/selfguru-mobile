@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, ListView, StyleSheet } from 'react-native';
-import { Button, List, ListItem } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, ListView } from 'react-native';
+import { List, Spinner } from 'native-base';
 import { graphql } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import formatDateTime from '../../utils/formatDateTime';
-import { labelColors } from './MessageLabels';
+import DeleteButton from '../Buttons/DeleteButton';
 import Message from './Message';
+import formatDateTime from '../../utils/formatDateTime';
 
 class Messages extends Component {
   state = { dataSource: null };
@@ -53,10 +52,11 @@ class Messages extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     return (
-      <View>
-        {dataSource && (
+      <View style={{ justifyContent: `${!dataSource} ? 'center' : null` }}>
+        {!dataSource ? (
+          <Spinner color="#C5C3C6" />
+        ) : (
           <List
-            contentContainerStyle={styles.list}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             rightOpenValue={-75}
@@ -69,33 +69,13 @@ class Messages extends Component {
                   handleMessageNavigate={this.handleMessageNavigate}
                   item={item}
                 />
-                // <ListItem
-                //   style={styles.listItem}
-                //   onPress={() => this.handleMessageNavigate(item.id)}
-                // >
-                //   <Ionicons name={'ios-mail'} size={30} color="#46494C" />
-                //   <View style={styles.listItemText}>
-                //     <Text style={styles.messageText}>{item.content}</Text>
-                //     <Text style={styles.messageDate}>{formattedTime}</Text>
-                //   </View>
-                //   <Ionicons
-                //     name={`ios-${item.label}`}
-                //     size={30}
-                //     color={labelColors[item.label]}
-                //   />
-                // </ListItem>
               );
             }}
             renderRightHiddenRow={(item, secId, rowId, rowMap) => (
-              <Button
-                full
-                onPress={() =>
-                  this.handleMessageDelete(item.id, secId, rowId, rowMap)
-                }
-                style={{ backgroundColor: '#D33F49' }}
-              >
-                <Ionicons name="ios-trash" size={30} color="#fff" />
-              </Button>
+              <DeleteButton
+                handleMessageDelete={this.handleMessageDelete}
+                deleteProps={{ id: item.id, secId, rowId, rowMap }}
+              />
             )}
             keyExtractor={item => item.id}
           />
@@ -104,31 +84,6 @@ class Messages extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  list: {
-    justifyContent: 'space-between'
-  },
-  listItem: {
-    backgroundColor: '#fff',
-    padding: 20,
-    marginLeft: 0
-  },
-  listItemText: {
-    marginRight: 'auto',
-    marginLeft: 10
-  },
-  messageText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#46494C',
-    fontStyle: 'italic'
-  },
-  messageDate: {
-    fontSize: 12,
-    color: '#46494C'
-  }
-});
 
 const deleteMessage = gql`
   mutation deleteMessage($id: ID!) {

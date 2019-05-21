@@ -34,7 +34,11 @@ class ProfileScreen extends Component {
         <ProfileHeader user={user} />
         <ProfileContactForm user={user} handleAlert={this.handleAlert} />
         <ProfilePasswordForm />
-        <Button title="Logout" onPress={this.handleClick} />
+        <Button
+          title="Logout"
+          onPress={this.handleClick}
+          style={{ marginBottom: 20 }}
+        />
       </ScrollView>
     );
   }
